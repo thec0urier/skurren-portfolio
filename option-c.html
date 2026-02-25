@@ -1,0 +1,1897 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sushant Kurren - Cinematic Portfolio</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Georgia', 'Times New Roman', serif;
+            background: #0d0d0d;
+            color: #e0e0e0;
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        .nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            background: rgba(13, 13, 13, 0.95);
+            backdrop-filter: blur(20px);
+            padding: 1.5rem 3rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 2000;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .nav h1 {
+            font-size: 1.8rem;
+            font-weight: 300;
+            letter-spacing: 0.15em;
+            color: #ffffff;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2.5rem;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: #e0e0e0;
+            font-size: 1rem;
+            transition: color 0.3s;
+            letter-spacing: 0.05em;
+        }
+
+        .nav-links a:hover, .nav-links a.active {
+            color: #ffffff;
+        }
+
+        .hero {
+            height: 100vh;
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+        }
+
+        .hero img {
+            width: 100vw;
+            height: 100vh;
+            object-fit: cover;
+            filter: brightness(0.8) contrast(1.2);
+        }
+
+        .hero-overlay {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: linear-gradient(transparent, rgba(13, 13, 13, 0.9));
+            padding: 4rem 3rem 3rem 3rem;
+            text-align: center;
+        }
+
+        .hero-title {
+            font-size: 3.5rem;
+            font-weight: 100;
+            letter-spacing: 0.2em;
+            margin-bottom: 1rem;
+            color: #ffffff;
+            text-shadow: 2px 2px 20px rgba(0, 0, 0, 0.8);
+        }
+
+        .hero-subtitle {
+            font-family: 'Courier New', monospace;
+            font-size: 1.2rem;
+            opacity: 0.9;
+            letter-spacing: 0.1em;
+            color: #e0e0e0;
+        }
+
+        .series-container {
+            padding: 6rem 0;
+        }
+
+        .series {
+            margin-bottom: 8rem;
+            opacity: 0;
+            transform: translateY(50px);
+            transition: opacity 1s ease, transform 1s ease;
+        }
+
+        .series.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .series-header {
+            text-align: center;
+            margin-bottom: 3rem;
+            padding: 0 3rem;
+        }
+
+        .series-title {
+            font-size: 2.5rem;
+            font-weight: 100;
+            letter-spacing: 0.15em;
+            margin-bottom: 0.5rem;
+            color: #ffffff;
+        }
+
+        .series-subtitle {
+            font-family: 'Courier New', monospace;
+            font-size: 0.9rem;
+            opacity: 0.7;
+            letter-spacing: 0.1em;
+            color: #b0b0b0;
+        }
+
+        .filmstrip {
+            display: flex;
+            overflow-x: auto;
+            gap: 2rem;
+            padding: 0 3rem 2rem 3rem;
+            scroll-behavior: smooth;
+            scrollbar-width: thin;
+            scrollbar-color: rgba(255, 255, 255, 0.3) transparent;
+        }
+
+        .filmstrip::-webkit-scrollbar {
+            height: 8px;
+        }
+
+        .filmstrip::-webkit-scrollbar-track {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 4px;
+        }
+
+        .filmstrip::-webkit-scrollbar-thumb {
+            background: rgba(255, 255, 255, 0.3);
+            border-radius: 4px;
+        }
+
+        .filmstrip::-webkit-scrollbar-thumb:hover {
+            background: rgba(255, 255, 255, 0.5);
+        }
+
+        .filmstrip-item {
+            flex-shrink: 0;
+            position: relative;
+            border-radius: 4px;
+            overflow: hidden;
+            transition: transform 0.3s ease;
+            cursor: pointer;
+        }
+
+        .filmstrip-item:hover {
+            transform: scale(1.05);
+        }
+
+        .filmstrip-item img {
+            display: block;
+            border-radius: 4px;
+        }
+
+        .portrait-item {
+            height: 400px;
+        }
+
+        .portrait-item img {
+            height: 100%;
+            width: auto;
+        }
+
+        .landscape-item {
+            width: 400px;
+        }
+
+        .landscape-item img {
+            width: 100%;
+            height: auto;
+        }
+
+        .square-item {
+            width: 300px;
+            height: 300px;
+        }
+
+        .square-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .filmstrip-caption {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: linear-gradient(transparent, rgba(13, 13, 13, 0.9));
+            color: white;
+            padding: 1.5rem 1rem 1rem 1rem;
+            font-family: 'Courier New', monospace;
+            font-size: 0.8rem;
+            letter-spacing: 0.05em;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .filmstrip-item:hover .filmstrip-caption {
+            opacity: 1;
+        }
+
+        .widescreen-section {
+            margin-top: 4rem;
+        }
+
+        .widescreen-header {
+            text-align: center;
+            padding: 4rem 3rem;
+            background: linear-gradient(135deg, #1a1a1a 0%, #0d0d0d 100%);
+        }
+
+        .widescreen-header h2 {
+            font-size: 3rem;
+            font-weight: 100;
+            letter-spacing: 0.2em;
+            margin-bottom: 1rem;
+            color: #ffffff;
+        }
+
+        .widescreen-header p {
+            font-family: 'Courier New', monospace;
+            font-size: 1rem;
+            opacity: 0.8;
+            letter-spacing: 0.1em;
+            max-width: 600px;
+            margin: 0 auto;
+            color: #b0b0b0;
+        }
+
+        .widescreen-container {
+            scroll-snap-type: y mandatory;
+        }
+
+        .widescreen-photo {
+            height: 100vh;
+            width: 100vw;
+            position: relative;
+            scroll-snap-align: start;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+        }
+
+        .widescreen-photo img {
+            width: 100vw;
+            height: 100vh;
+            object-fit: cover;
+            filter: contrast(1.1) saturation(1.1) brightness(0.9);
+        }
+
+        .widescreen-caption {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: rgba(13, 13, 13, 0.8);
+            color: #ffffff;
+            padding: 2rem 3rem;
+            border-radius: 4px;
+            font-family: 'Courier New', monospace;
+            font-size: 1.5rem;
+            font-weight: 300;
+            letter-spacing: 0.1em;
+            backdrop-filter: blur(15px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            text-align: center;
+            opacity: 0;
+            animation: fadeInCaption 2s ease 1s forwards;
+        }
+
+        @keyframes fadeInCaption {
+            from {
+                opacity: 0;
+                transform: translate(-50%, -50%) translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translate(-50%, -50%) translateY(0);
+            }
+        }
+
+        .lightbox {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.95);
+            z-index: 3000;
+            padding: 2rem;
+        }
+
+        .lightbox-content {
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+        }
+
+        .lightbox img {
+            max-width: 90%;
+            max-height: 90%;
+            object-fit: contain;
+            border-radius: 4px;
+        }
+
+        .lightbox-caption {
+            position: absolute;
+            bottom: 3rem;
+            left: 50%;
+            transform: translateX(-50%);
+            color: white;
+            text-align: center;
+            font-family: 'Courier New', monospace;
+            font-size: 1.1rem;
+            letter-spacing: 0.05em;
+            background: rgba(13, 13, 13, 0.8);
+            padding: 1rem 2rem;
+            border-radius: 4px;
+            backdrop-filter: blur(10px);
+        }
+
+        .close {
+            position: absolute;
+            top: 2rem;
+            right: 2rem;
+            color: white;
+            font-size: 2.5rem;
+            cursor: pointer;
+            font-weight: 300;
+            transition: opacity 0.3s ease;
+        }
+
+        .close:hover {
+            opacity: 0.7;
+        }
+
+        @media (max-width: 768px) {
+            .nav {
+                padding: 1rem 1.5rem;
+            }
+            
+            .nav h1 {
+                font-size: 1.4rem;
+            }
+            
+            .nav-links {
+                gap: 1.5rem;
+            }
+            
+            .nav-links a {
+                font-size: 0.9rem;
+            }
+            
+            .hero-title {
+                font-size: 2.5rem;
+            }
+            
+            .hero-subtitle {
+                font-size: 1rem;
+            }
+            
+            .series-title {
+                font-size: 2rem;
+            }
+            
+            .filmstrip {
+                padding: 0 1.5rem 2rem 1.5rem;
+                gap: 1rem;
+            }
+            
+            .portrait-item {
+                height: 300px;
+            }
+            
+            .landscape-item {
+                width: 300px;
+            }
+            
+            .square-item {
+                width: 250px;
+                height: 250px;
+            }
+            
+            .widescreen-header {
+                padding: 3rem 1.5rem;
+            }
+            
+            .widescreen-header h2 {
+                font-size: 2rem;
+            }
+            
+            .widescreen-caption {
+                font-size: 1.2rem;
+                padding: 1.5rem 2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <nav class="nav">
+        <h1>Sushant Kurren</h1>
+        <div class="nav-links">
+            <a href="#series" class="nav-link active" data-section="series">Series</a>
+            <a href="#widescreen" class="nav-link" data-section="widescreen">Cinematic</a>
+        </div>
+    </nav>
+
+    <section class="hero" id="hero">
+        <!-- Hero image will be loaded by JavaScript -->
+        <div class="hero-overlay">
+            <h1 class="hero-title">SUSHANT KURREN</h1>
+            <p class="hero-subtitle">CONTEMPLATIVE TRAVEL · CINEMATIC COMPOSITIONS</p>
+        </div>
+    </section>
+
+    <main class="series-container" id="series">
+        <!-- Series will be populated by JavaScript -->
+    </main>
+
+    <section class="widescreen-section" id="widescreen" style="display: none;">
+        <div class="widescreen-header">
+            <h2>CINEMATIC</h2>
+            <p>Wide format compositions capturing the expansive beauty of travel photography</p>
+        </div>
+        <div class="widescreen-container" id="widescreenContainer">
+            <!-- Widescreen photos will be loaded here -->
+        </div>
+    </section>
+
+    <div class="lightbox" id="lightbox">
+        <div class="lightbox-content">
+            <span class="close" id="closeLightbox">&times;</span>
+            <img id="lightboxImage" src="" alt="">
+            <div class="lightbox-caption" id="lightboxCaption"></div>
+        </div>
+    </div>
+
+    <script>
+        const posts = [
+  {
+    "shortcode": "DSej04WAUZV",
+    "caption": "quick stop",
+    "date": "2025-12-20_07-50-04",
+    "images": [
+      {
+        "file": "DSej04WAUZV_1.jpg",
+        "w": 750,
+        "h": 421
+      },
+      {
+        "file": "DSej04WAUZV_2.jpg",
+        "w": 1080,
+        "h": 608
+      },
+      {
+        "file": "DSej04WAUZV_3.jpg",
+        "w": 1080,
+        "h": 608
+      }
+    ],
+    "ratio": 1.78,
+    "wide": true,
+    "portrait": false
+  },
+  {
+    "shortcode": "DRtijwdiGIp",
+    "caption": "more from Scotland",
+    "date": "2025-12-01_06-56-12",
+    "images": [
+      {
+        "file": "DRtijwdiGIp_1.jpg",
+        "w": 1080,
+        "h": 718
+      },
+      {
+        "file": "DRtijwdiGIp_2.jpg",
+        "w": 750,
+        "h": 498
+      },
+      {
+        "file": "DRtijwdiGIp_3.jpg",
+        "w": 750,
+        "h": 498
+      }
+    ],
+    "ratio": 1.5,
+    "wide": false,
+    "portrait": false
+  },
+  {
+    "shortcode": "DQBbSLlCB8y",
+    "caption": "highlands on film",
+    "date": "2025-10-20_07-14-39",
+    "images": [
+      {
+        "file": "DQBbSLlCB8y_1.jpg",
+        "w": 1080,
+        "h": 810
+      },
+      {
+        "file": "DQBbSLlCB8y_2.jpg",
+        "w": 1080,
+        "h": 810
+      },
+      {
+        "file": "DQBbSLlCB8y_3.jpg",
+        "w": 1080,
+        "h": 810
+      }
+    ],
+    "ratio": 1.33,
+    "wide": false,
+    "portrait": false
+  },
+  {
+    "shortcode": "DO-o-tdAYLV",
+    "caption": "cannes on film",
+    "date": "2025-09-24_08-45-13",
+    "images": [
+      {
+        "file": "DO-o-tdAYLV_1.jpg",
+        "w": 1080,
+        "h": 723
+      },
+      {
+        "file": "DO-o-tdAYLV_2.jpg",
+        "w": 1080,
+        "h": 723
+      },
+      {
+        "file": "DO-o-tdAYLV_3.jpg",
+        "w": 1080,
+        "h": 724
+      }
+    ],
+    "ratio": 1.49,
+    "wide": false,
+    "portrait": false
+  },
+  {
+    "shortcode": "DOGE-SbgV0f",
+    "caption": "big barci",
+    "date": "2025-09-02_09-33-07",
+    "images": [
+      {
+        "file": "DOGE-SbgV0f_1.jpg",
+        "w": 1080,
+        "h": 720
+      },
+      {
+        "file": "DOGE-SbgV0f_2.jpg",
+        "w": 1080,
+        "h": 720
+      },
+      {
+        "file": "DOGE-SbgV0f_3.jpg",
+        "w": 750,
+        "h": 500
+      }
+    ],
+    "ratio": 1.5,
+    "wide": false,
+    "portrait": false
+  },
+  {
+    "shortcode": "DL6-CXfI5oG",
+    "caption": "some frames from lisboa",
+    "date": "2025-07-10_08-58-04",
+    "images": [
+      {
+        "file": "DL6-CXfI5oG_1.jpg",
+        "w": 1080,
+        "h": 1440
+      },
+      {
+        "file": "DL6-CXfI5oG_2.jpg",
+        "w": 1080,
+        "h": 1440
+      },
+      {
+        "file": "DL6-CXfI5oG_3.jpg",
+        "w": 1080,
+        "h": 1440
+      }
+    ],
+    "ratio": 0.75,
+    "wide": false,
+    "portrait": true
+  },
+  {
+    "shortcode": "DLw1fUiIyQ0",
+    "caption": "nice sesh in HK",
+    "date": "2025-07-06_10-30-58",
+    "images": [
+      {
+        "file": "DLw1fUiIyQ0_1.jpg",
+        "w": 1080,
+        "h": 720
+      },
+      {
+        "file": "DLw1fUiIyQ0_2.jpg",
+        "w": 1080,
+        "h": 720
+      },
+      {
+        "file": "DLw1fUiIyQ0_3.jpg",
+        "w": 750,
+        "h": 500
+      }
+    ],
+    "ratio": 1.5,
+    "wide": false,
+    "portrait": false
+  },
+  {
+    "shortcode": "DLZVzaIoPCo",
+    "caption": "photos from rio",
+    "date": "2025-06-27_07-31-34",
+    "images": [
+      {
+        "file": "DLZVzaIoPCo_1.jpg",
+        "w": 1080,
+        "h": 1350
+      },
+      {
+        "file": "DLZVzaIoPCo_2.jpg",
+        "w": 1080,
+        "h": 1350
+      },
+      {
+        "file": "DLZVzaIoPCo_3.jpg",
+        "w": 1080,
+        "h": 1350
+      }
+    ],
+    "ratio": 0.8,
+    "wide": false,
+    "portrait": true
+  },
+  {
+    "shortcode": "DLPWduDISyd",
+    "caption": "el chalten",
+    "date": "2025-06-23_10-24-56",
+    "images": [
+      {
+        "file": "DLPWduDISyd_1.jpg",
+        "w": 1080,
+        "h": 720
+      },
+      {
+        "file": "DLPWduDISyd_2.jpg",
+        "w": 1080,
+        "h": 720
+      },
+      {
+        "file": "DLPWduDISyd_3.jpg",
+        "w": 1080,
+        "h": 720
+      }
+    ],
+    "ratio": 1.5,
+    "wide": false,
+    "portrait": false
+  },
+  {
+    "shortcode": "DKy073ahGN2",
+    "caption": "on the road",
+    "date": "2025-06-12_08-33-13",
+    "images": [
+      {
+        "file": "DKy073ahGN2_1.jpg",
+        "w": 1080,
+        "h": 720
+      },
+      {
+        "file": "DKy073ahGN2_2.jpg",
+        "w": 1080,
+        "h": 720
+      },
+      {
+        "file": "DKy073ahGN2_3.jpg",
+        "w": 1080,
+        "h": 720
+      }
+    ],
+    "ratio": 1.5,
+    "wide": false,
+    "portrait": false
+  },
+  {
+    "shortcode": "DKodqzrh_Ql",
+    "caption": "some photos from el calafate",
+    "date": "2025-06-08_07-57-30",
+    "images": [
+      {
+        "file": "DKodqzrh_Ql_1.jpg",
+        "w": 1080,
+        "h": 1350
+      },
+      {
+        "file": "DKodqzrh_Ql_2.jpg",
+        "w": 1080,
+        "h": 1350
+      },
+      {
+        "file": "DKodqzrh_Ql_3.jpg",
+        "w": 1080,
+        "h": 1350
+      }
+    ],
+    "ratio": 0.8,
+    "wide": false,
+    "portrait": true
+  },
+  {
+    "shortcode": "DJ1BIwUBRz7",
+    "caption": "fuji",
+    "date": "2025-05-19_08-26-55",
+    "images": [
+      {
+        "file": "DJ1BIwUBRz7_1.jpg",
+        "w": 1080,
+        "h": 1350
+      },
+      {
+        "file": "DJ1BIwUBRz7_2.jpg",
+        "w": 1080,
+        "h": 1350
+      },
+      {
+        "file": "DJ1BIwUBRz7_3.jpg",
+        "w": 1080,
+        "h": 1350
+      }
+    ],
+    "ratio": 0.8,
+    "wide": false,
+    "portrait": true
+  },
+  {
+    "shortcode": "DJv-MK-Bjeb",
+    "caption": "some photos from hokkaido",
+    "date": "2025-05-17_09-24-58",
+    "images": [
+      {
+        "file": "DJv-MK-Bjeb_1.jpg",
+        "w": 1080,
+        "h": 1350
+      },
+      {
+        "file": "DJv-MK-Bjeb_2.jpg",
+        "w": 1080,
+        "h": 1350
+      },
+      {
+        "file": "DJv-MK-Bjeb_3.jpg",
+        "w": 1080,
+        "h": 1350
+      }
+    ],
+    "ratio": 0.8,
+    "wide": false,
+    "portrait": true
+  },
+  {
+    "shortcode": "DJrAgquovex",
+    "caption": "standard japan nightlight photos",
+    "date": "2025-05-15_11-09-03",
+    "images": [
+      {
+        "file": "DJrAgquovex_1.jpg",
+        "w": 1080,
+        "h": 1350
+      },
+      {
+        "file": "DJrAgquovex_2.jpg",
+        "w": 1080,
+        "h": 1350
+      },
+      {
+        "file": "DJrAgquovex_3.jpg",
+        "w": 1080,
+        "h": 1350
+      }
+    ],
+    "ratio": 0.8,
+    "wide": false,
+    "portrait": true
+  },
+  {
+    "shortcode": "DI3gOfhBq9e",
+    "caption": "some frames from kyoto",
+    "date": "2025-04-25_11-05-41",
+    "images": [
+      {
+        "file": "DI3gOfhBq9e_1.jpg",
+        "w": 1080,
+        "h": 1350
+      },
+      {
+        "file": "DI3gOfhBq9e_2.jpg",
+        "w": 1080,
+        "h": 1350
+      },
+      {
+        "file": "DI3gOfhBq9e_3.jpg",
+        "w": 1080,
+        "h": 1350
+      }
+    ],
+    "ratio": 0.8,
+    "wide": false,
+    "portrait": true
+  },
+  {
+    "shortcode": "DGcY_E3MGbO",
+    "caption": "some night shots",
+    "date": "2025-02-24_05-20-07",
+    "images": [
+      {
+        "file": "DGcY_E3MGbO_1.jpg",
+        "w": 1080,
+        "h": 720
+      },
+      {
+        "file": "DGcY_E3MGbO_2.jpg",
+        "w": 1080,
+        "h": 720
+      },
+      {
+        "file": "DGcY_E3MGbO_3.jpg",
+        "w": 1080,
+        "h": 720
+      }
+    ],
+    "ratio": 1.5,
+    "wide": false,
+    "portrait": false
+  },
+  {
+    "shortcode": "DF1F999v2uc",
+    "caption": "A walk around Roppongi",
+    "date": "2025-02-08_23-03-34",
+    "images": [
+      {
+        "file": "DF1F999v2uc_1.jpg",
+        "w": 1080,
+        "h": 720
+      },
+      {
+        "file": "DF1F999v2uc_2.jpg",
+        "w": 1080,
+        "h": 720
+      },
+      {
+        "file": "DF1F999v2uc_3.jpg",
+        "w": 1080,
+        "h": 720
+      }
+    ],
+    "ratio": 1.5,
+    "wide": false,
+    "portrait": false
+  },
+  {
+    "shortcode": "DBa3dXHPTGm",
+    "caption": "between santiago and buenos aires",
+    "date": "2024-10-22_08-30-57",
+    "images": [
+      {
+        "file": "DBa3dXHPTGm_1.jpg",
+        "w": 1080,
+        "h": 720
+      },
+      {
+        "file": "DBa3dXHPTGm_2.jpg",
+        "w": 1080,
+        "h": 721
+      },
+      {
+        "file": "DBa3dXHPTGm_3.jpg",
+        "w": 1080,
+        "h": 721
+      }
+    ],
+    "ratio": 1.5,
+    "wide": false,
+    "portrait": false
+  },
+  {
+    "shortcode": "C_h-cQhSz6Y",
+    "caption": "some photos from brussels",
+    "date": "2024-09-05_09-43-52",
+    "images": [
+      {
+        "file": "C_h-cQhSz6Y_1.jpg",
+        "w": 1080,
+        "h": 720
+      },
+      {
+        "file": "C_h-cQhSz6Y_2.jpg",
+        "w": 1080,
+        "h": 720
+      },
+      {
+        "file": "C_h-cQhSz6Y_3.jpg",
+        "w": 1080,
+        "h": 720
+      }
+    ],
+    "ratio": 1.5,
+    "wide": false,
+    "portrait": false
+  },
+  {
+    "shortcode": "C_XkDlCyX9T",
+    "caption": "On the road to Oslo",
+    "date": "2024-09-01_08-40-54",
+    "images": [
+      {
+        "file": "C_XkDlCyX9T_1.jpg",
+        "w": 1080,
+        "h": 720
+      },
+      {
+        "file": "C_XkDlCyX9T_2.jpg",
+        "w": 1080,
+        "h": 720
+      },
+      {
+        "file": "C_XkDlCyX9T_3.jpg",
+        "w": 1080,
+        "h": 720
+      }
+    ],
+    "ratio": 1.5,
+    "wide": false,
+    "portrait": false
+  },
+  {
+    "shortcode": "C_EzQH4N7Py",
+    "caption": "street photography be fun lowkey",
+    "date": "2024-08-25_01-48-07",
+    "images": [
+      {
+        "file": "C_EzQH4N7Py_1.jpg",
+        "w": 1080,
+        "h": 719
+      },
+      {
+        "file": "C_EzQH4N7Py_2.jpg",
+        "w": 1080,
+        "h": 719
+      },
+      {
+        "file": "C_EzQH4N7Py_3.jpg",
+        "w": 1080,
+        "h": 719
+      }
+    ],
+    "ratio": 1.5,
+    "wide": false,
+    "portrait": false
+  },
+  {
+    "shortcode": "C-7MFkxuisK",
+    "caption": "I said hi to a reindeer",
+    "date": "2024-08-21_08-12-43",
+    "images": [
+      {
+        "file": "C-7MFkxuisK_1.jpg",
+        "w": 1080,
+        "h": 720
+      },
+      {
+        "file": "C-7MFkxuisK_2.jpg",
+        "w": 1080,
+        "h": 720
+      },
+      {
+        "file": "C-7MFkxuisK_3.jpg",
+        "w": 1080,
+        "h": 720
+      }
+    ],
+    "ratio": 1.5,
+    "wide": false,
+    "portrait": false
+  },
+  {
+    "shortcode": "C-mViafOhhc",
+    "caption": "some houses from round the way",
+    "date": "2024-08-13_05-51-15",
+    "images": [
+      {
+        "file": "C-mViafOhhc_1.jpg",
+        "w": 1080,
+        "h": 1080
+      },
+      {
+        "file": "C-mViafOhhc_2.jpg",
+        "w": 1080,
+        "h": 1080
+      },
+      {
+        "file": "C-mViafOhhc_3.jpg",
+        "w": 1080,
+        "h": 1080
+      }
+    ],
+    "ratio": 1.0,
+    "wide": false,
+    "portrait": false
+  },
+  {
+    "shortcode": "C-ChVnmSieV",
+    "caption": "more from Å",
+    "date": "2024-07-30_08-01-42",
+    "images": [
+      {
+        "file": "C-ChVnmSieV_1.jpg",
+        "w": 1080,
+        "h": 1080
+      },
+      {
+        "file": "C-ChVnmSieV_2.jpg",
+        "w": 1080,
+        "h": 1080
+      },
+      {
+        "file": "C-ChVnmSieV_3.jpg",
+        "w": 1080,
+        "h": 1080
+      }
+    ],
+    "ratio": 1.0,
+    "wide": false,
+    "portrait": false
+  },
+  {
+    "shortcode": "C96tOwmys2Z",
+    "caption": "went for a walk",
+    "date": "2024-07-27_07-11-42",
+    "images": [
+      {
+        "file": "C96tOwmys2Z_1.jpg",
+        "w": 1080,
+        "h": 1080
+      },
+      {
+        "file": "C96tOwmys2Z_2.jpg",
+        "w": 1080,
+        "h": 1080
+      },
+      {
+        "file": "C96tOwmys2Z_3.jpg",
+        "w": 1080,
+        "h": 1080
+      }
+    ],
+    "ratio": 1.0,
+    "wide": false,
+    "portrait": false
+  },
+  {
+    "shortcode": "C9wQZJxScWV",
+    "caption": "afternoon in lofoten",
+    "date": "2024-07-23_05-47-18",
+    "images": [
+      {
+        "file": "C9wQZJxScWV_1.jpg",
+        "w": 1080,
+        "h": 1080
+      },
+      {
+        "file": "C9wQZJxScWV_2.jpg",
+        "w": 1080,
+        "h": 1080
+      },
+      {
+        "file": "C9wQZJxScWV_3.jpg",
+        "w": 1080,
+        "h": 1080
+      }
+    ],
+    "ratio": 1.0,
+    "wide": false,
+    "portrait": false
+  },
+  {
+    "shortcode": "C9DrG5-KyKe",
+    "caption": "to lofoten",
+    "date": "2024-07-05_22-14-55",
+    "images": [
+      {
+        "file": "C9DrG5-KyKe_1.jpg",
+        "w": 1080,
+        "h": 1080
+      },
+      {
+        "file": "C9DrG5-KyKe_2.jpg",
+        "w": 1080,
+        "h": 1080
+      },
+      {
+        "file": "C9DrG5-KyKe_3.jpg",
+        "w": 1080,
+        "h": 1080
+      }
+    ],
+    "ratio": 1.0,
+    "wide": false,
+    "portrait": false
+  },
+  {
+    "shortcode": "C8yrHuzKoJA",
+    "caption": "on the road",
+    "date": "2024-06-29_07-47-56",
+    "images": [
+      {
+        "file": "C8yrHuzKoJA_1.jpg",
+        "w": 1080,
+        "h": 1080
+      },
+      {
+        "file": "C8yrHuzKoJA_2.jpg",
+        "w": 750,
+        "h": 750
+      },
+      {
+        "file": "C8yrHuzKoJA_3.jpg",
+        "w": 1080,
+        "h": 1080
+      }
+    ],
+    "ratio": 1.0,
+    "wide": false,
+    "portrait": false
+  },
+  {
+    "shortcode": "C8Ww-XVqS7U",
+    "caption": "some pictures from trondheim",
+    "date": "2024-06-18_11-40-21",
+    "images": [
+      {
+        "file": "C8Ww-XVqS7U_1.jpg",
+        "w": 1080,
+        "h": 1080
+      },
+      {
+        "file": "C8Ww-XVqS7U_2.jpg",
+        "w": 1080,
+        "h": 1080
+      },
+      {
+        "file": "C8Ww-XVqS7U_3.jpg",
+        "w": 1080,
+        "h": 1080
+      }
+    ],
+    "ratio": 1.0,
+    "wide": false,
+    "portrait": false
+  },
+  {
+    "shortcode": "C7-9pT3Koaw",
+    "caption": "lunch on the water",
+    "date": "2024-06-09_05-49-18",
+    "images": [
+      {
+        "file": "C7-9pT3Koaw_1.jpg",
+        "w": 1080,
+        "h": 1080
+      },
+      {
+        "file": "C7-9pT3Koaw_2.jpg",
+        "w": 1080,
+        "h": 1080
+      },
+      {
+        "file": "C7-9pT3Koaw_3.jpg",
+        "w": 1080,
+        "h": 1080
+      }
+    ],
+    "ratio": 1.0,
+    "wide": false,
+    "portrait": false
+  },
+  {
+    "shortcode": "C7L3KK5LYeH",
+    "caption": "some photos from #chiangmai",
+    "date": "2024-05-20_09-31-21",
+    "images": [
+      {
+        "file": "C7L3KK5LYeH_1.jpg",
+        "w": 1080,
+        "h": 1080
+      },
+      {
+        "file": "C7L3KK5LYeH_2.jpg",
+        "w": 1080,
+        "h": 1080
+      },
+      {
+        "file": "C7L3KK5LYeH_3.jpg",
+        "w": 1080,
+        "h": 1080
+      }
+    ],
+    "ratio": 1.0,
+    "wide": false,
+    "portrait": false
+  },
+  {
+    "shortcode": "C50p7LVvKZP",
+    "caption": "Darling Harbour on \"film\"",
+    "date": "2024-04-16_12-41-47",
+    "images": [
+      {
+        "file": "C50p7LVvKZP_1.jpg",
+        "w": 1080,
+        "h": 1080
+      },
+      {
+        "file": "C50p7LVvKZP_2.jpg",
+        "w": 1080,
+        "h": 1080
+      },
+      {
+        "file": "C50p7LVvKZP_3.jpg",
+        "w": 1080,
+        "h": 1080
+      }
+    ],
+    "ratio": 1.0,
+    "wide": false,
+    "portrait": false
+  },
+  {
+    "shortcode": "C4P_fi6LwPV",
+    "caption": "back again",
+    "date": "2024-03-08_10-26-58",
+    "images": [
+      {
+        "file": "C4P_fi6LwPV_1.jpg",
+        "w": 1080,
+        "h": 1080
+      },
+      {
+        "file": "C4P_fi6LwPV_2.jpg",
+        "w": 1080,
+        "h": 1080
+      },
+      {
+        "file": "C4P_fi6LwPV_3.jpg",
+        "w": 1080,
+        "h": 1080
+      }
+    ],
+    "ratio": 1.0,
+    "wide": false,
+    "portrait": false
+  },
+  {
+    "shortcode": "C1QrQCyL0Ue",
+    "caption": "Oh yeah I went to Bali lol",
+    "date": "2023-12-25_03-15-08",
+    "images": [
+      {
+        "file": "C1QrQCyL0Ue_1.jpg",
+        "w": 1080,
+        "h": 1080
+      },
+      {
+        "file": "C1QrQCyL0Ue_2.jpg",
+        "w": 1080,
+        "h": 1080
+      },
+      {
+        "file": "C1QrQCyL0Ue_3.jpg",
+        "w": 1080,
+        "h": 1080
+      }
+    ],
+    "ratio": 1.0,
+    "wide": false,
+    "portrait": false
+  },
+  {
+    "shortcode": "C1N-mREBoqi",
+    "caption": "odds and ends",
+    "date": "2023-12-24_02-06-28",
+    "images": [
+      {
+        "file": "C1N-mREBoqi_1.jpg",
+        "w": 1080,
+        "h": 1080
+      },
+      {
+        "file": "C1N-mREBoqi_2.jpg",
+        "w": 1080,
+        "h": 1080
+      },
+      {
+        "file": "C1N-mREBoqi_3.jpg",
+        "w": 1080,
+        "h": 1080
+      }
+    ],
+    "ratio": 1.0,
+    "wide": false,
+    "portrait": false
+  },
+  {
+    "shortcode": "Cw-EOtVKGhh",
+    "caption": "Zermatt is cool + Toblerone mountain",
+    "date": "2023-09-09_11-42-16",
+    "images": [
+      {
+        "file": "Cw-EOtVKGhh_1.jpg",
+        "w": 1080,
+        "h": 1080
+      },
+      {
+        "file": "Cw-EOtVKGhh_2.jpg",
+        "w": 1080,
+        "h": 1080
+      },
+      {
+        "file": "Cw-EOtVKGhh_3.jpg",
+        "w": 1080,
+        "h": 1080
+      }
+    ],
+    "ratio": 1.0,
+    "wide": false,
+    "portrait": false
+  },
+  {
+    "shortcode": "Cwr06LCKLaQ",
+    "caption": "wengen is perfect",
+    "date": "2023-09-02_09-42-03",
+    "images": [
+      {
+        "file": "Cwr06LCKLaQ_1.jpg",
+        "w": 1080,
+        "h": 1080
+      },
+      {
+        "file": "Cwr06LCKLaQ_2.jpg",
+        "w": 1080,
+        "h": 1080
+      },
+      {
+        "file": "Cwr06LCKLaQ_3.jpg",
+        "w": 1080,
+        "h": 1080
+      }
+    ],
+    "ratio": 1.0,
+    "wide": false,
+    "portrait": false
+  },
+  {
+    "shortcode": "CwmddyxqHth",
+    "caption": "Jungfrau more like Oldfrau",
+    "date": "2023-08-31_07-41-00",
+    "images": [
+      {
+        "file": "CwmddyxqHth_1.jpg",
+        "w": 1080,
+        "h": 1080
+      },
+      {
+        "file": "CwmddyxqHth_2.jpg",
+        "w": 1080,
+        "h": 1080
+      },
+      {
+        "file": "CwmddyxqHth_3.jpg",
+        "w": 1080,
+        "h": 1080
+      }
+    ],
+    "ratio": 1.0,
+    "wide": false,
+    "portrait": false
+  },
+  {
+    "shortcode": "CwhdyauKd2X",
+    "caption": "Interlaken was not Interlacken",
+    "date": "2023-08-29_09-07-37",
+    "images": [
+      {
+        "file": "CwhdyauKd2X_1.jpg",
+        "w": 1080,
+        "h": 1080
+      },
+      {
+        "file": "CwhdyauKd2X_2.jpg",
+        "w": 1080,
+        "h": 1080
+      },
+      {
+        "file": "CwhdyauKd2X_3.jpg",
+        "w": 1080,
+        "h": 1080
+      }
+    ],
+    "ratio": 1.0,
+    "wide": false,
+    "portrait": false
+  },
+  {
+    "shortcode": "CwW-YunqBi9",
+    "caption": "Could very easily live in Lucerne",
+    "date": "2023-08-25_07-20-49",
+    "images": [
+      {
+        "file": "CwW-YunqBi9_1.jpg",
+        "w": 1080,
+        "h": 1080
+      },
+      {
+        "file": "CwW-YunqBi9_2.jpg",
+        "w": 1080,
+        "h": 1080
+      },
+      {
+        "file": "CwW-YunqBi9_3.jpg",
+        "w": 1080,
+        "h": 1080
+      }
+    ],
+    "ratio": 1.0,
+    "wide": false,
+    "portrait": false
+  },
+  {
+    "shortcode": "CwR15kjKdXp",
+    "caption": "Paris is great",
+    "date": "2023-08-23_07-30-28",
+    "images": [
+      {
+        "file": "CwR15kjKdXp_1.jpg",
+        "w": 1080,
+        "h": 1080
+      },
+      {
+        "file": "CwR15kjKdXp_2.jpg",
+        "w": 1080,
+        "h": 1080
+      },
+      {
+        "file": "CwR15kjKdXp_3.jpg",
+        "w": 1080,
+        "h": 1080
+      }
+    ],
+    "ratio": 1.0,
+    "wide": false,
+    "portrait": false
+  },
+  {
+    "shortcode": "CrFi36RreH9",
+    "caption": "Maya Bay is lit",
+    "date": "2023-04-16_06-16-21",
+    "images": [
+      {
+        "file": "CrFi36RreH9_1.jpg",
+        "w": 1080,
+        "h": 1080
+      },
+      {
+        "file": "CrFi36RreH9_2.jpg",
+        "w": 1080,
+        "h": 1080
+      },
+      {
+        "file": "CrFi36RreH9_3.jpg",
+        "w": 1080,
+        "h": 1080
+      }
+    ],
+    "ratio": 1.0,
+    "wide": false,
+    "portrait": false
+  },
+  {
+    "shortcode": "Cq-ELUirOi-",
+    "caption": "🌅",
+    "date": "2023-04-13_08-33-26",
+    "images": [
+      {
+        "file": "Cq-ELUirOi-_1.jpg",
+        "w": 1080,
+        "h": 1080
+      },
+      {
+        "file": "Cq-ELUirOi-_2.jpg",
+        "w": 1080,
+        "h": 1080
+      },
+      {
+        "file": "Cq-ELUirOi-_3.jpg",
+        "w": 1080,
+        "h": 1080
+      }
+    ],
+    "ratio": 1.0,
+    "wide": false,
+    "portrait": false
+  },
+  {
+    "shortcode": "CqhvCa2LFN9",
+    "caption": "Koh Samui is goated",
+    "date": "2023-04-02_08-29-59",
+    "images": [
+      {
+        "file": "CqhvCa2LFN9_1.jpg",
+        "w": 1080,
+        "h": 1080
+      },
+      {
+        "file": "CqhvCa2LFN9_2.jpg",
+        "w": 1080,
+        "h": 1080
+      },
+      {
+        "file": "CqhvCa2LFN9_3.jpg",
+        "w": 1080,
+        "h": 1080
+      }
+    ],
+    "ratio": 1.0,
+    "wide": false,
+    "portrait": false
+  },
+  {
+    "shortcode": "CqfHR3Zr6qj",
+    "caption": "quadbiking was fun",
+    "date": "2023-04-01_08-04-05",
+    "images": [
+      {
+        "file": "CqfHR3Zr6qj_1.jpg",
+        "w": 1080,
+        "h": 1080
+      },
+      {
+        "file": "CqfHR3Zr6qj_2.jpg",
+        "w": 750,
+        "h": 750
+      },
+      {
+        "file": "CqfHR3Zr6qj_3.jpg",
+        "w": 1080,
+        "h": 1080
+      }
+    ],
+    "ratio": 1.0,
+    "wide": false,
+    "portrait": false
+  },
+  {
+    "shortcode": "CpJp8qPr-Iq",
+    "caption": "Been taking too many photos/videos and decided to reinstall IG to serve as a rep",
+    "date": "2023-02-27_03-32-20",
+    "images": [
+      {
+        "file": "CpJp8qPr-Iq_1.jpg",
+        "w": 1080,
+        "h": 1080
+      },
+      {
+        "file": "CpJp8qPr-Iq_2.jpg",
+        "w": 750,
+        "h": 750
+      },
+      {
+        "file": "CpJp8qPr-Iq_3.jpg",
+        "w": 1080,
+        "h": 1080
+      }
+    ],
+    "ratio": 1.0,
+    "wide": false,
+    "portrait": false
+  }
+];
+
+        // Location grouping logic with enhanced details
+        function getLocationGroup(caption) {
+            const c = caption.toLowerCase();
+            
+            if (c.includes('japan') || c.includes('kyoto') || c.includes('hokkaido') || 
+                c.includes('fuji') || c.includes('roppongi') || c.includes('nightlight')) {
+                return { name: 'Japan', subtitle: 'Neon Dreams & Sacred Temples' };
+            }
+            
+            if (c.includes('scotland') || c.includes('highlands')) {
+                return { name: 'Scotland', subtitle: 'Misty Highlands & Ancient Stones' };
+            }
+            
+            if (c.includes('rio') || c.includes('chalten') || c.includes('calafate') || 
+                c.includes('santiago') || c.includes('buenos aires')) {
+                return { name: 'South America', subtitle: 'Patagonian Peaks & Urban Rhythms' };
+            }
+            
+            if (c.includes('lofoten') || c.includes('oslo') || c.includes('trondheim') || 
+                c.includes('reindeer') || c.includes('å')) {
+                return { name: 'Scandinavia', subtitle: 'Arctic Light & Fjord Reflections' };
+            }
+            
+            if (c.includes('cannes') || c.includes('lisboa') || c.includes('brussels') || 
+                c.includes('paris')) {
+                return { name: 'Europe', subtitle: 'Cobbled Streets & Golden Hours' };
+            }
+            
+            if (c.includes('barci') || c.includes('barcelona')) {
+                return { name: 'Barcelona', subtitle: 'Catalonian Architecture & Mediterranean Light' };
+            }
+            
+            if (c.includes('zermatt') || c.includes('wengen') || c.includes('jungfrau') || 
+                c.includes('interlaken') || c.includes('lucerne')) {
+                return { name: 'Switzerland', subtitle: 'Alpine Majesty & Crystal Lakes' };
+            }
+            
+            if (c.includes('hong kong') || c.includes('hk')) {
+                return { name: 'Hong Kong', subtitle: 'Vertical City & Harbor Lights' };
+            }
+            
+            if (c.includes('chiang') || c.includes('maya') || c.includes('samui') || c.includes('quadbiking')) {
+                return { name: 'Thailand', subtitle: 'Tropical Temples & Island Adventures' };
+            }
+            
+            if (c.includes('bali')) {
+                return { name: 'Bali', subtitle: 'Sacred Islands & Volcanic Sunsets' };
+            }
+            
+            if (c.includes('darling') || c.includes('sydney') || c.includes('back again')) {
+                return { name: 'Australia', subtitle: 'Harbor Views & Urban Exploration' };
+            }
+            
+            return { name: 'Journey', subtitle: 'Captured Moments' };
+        }
+
+        // Group posts by location
+        function groupPostsByLocation() {
+            const grouped = {};
+            
+            posts.forEach(post => {
+                const location = getLocationGroup(post.caption);
+                const key = location.name;
+                
+                if (!grouped[key]) {
+                    grouped[key] = {
+                        ...location,
+                        posts: [],
+                        widePhotos: []
+                    };
+                }
+                
+                grouped[key].posts.push(post);
+                
+                // Add wide photos for cinematic section
+                if (post.ratio >= 1.5) {
+                    post.images.forEach(image => {
+                        grouped[key].widePhotos.push({
+                            file: image.file,
+                            caption: post.caption
+                        });
+                    });
+                }
+            });
+            
+            return grouped;
+        }
+
+        // Load hero image (choose the best wide shot)
+        function loadHero() {
+            const hero = document.querySelector('.hero');
+            // Use the first wide photo as hero
+            const widePost = posts.find(post => post.ratio >= 1.6);
+            if (widePost && widePost.images.length > 0) {
+                hero.innerHTML = `
+                    <img src="photos/${widePost.images[0].file}" alt="${widePost.caption}">
+                    <div class="hero-overlay">
+                        <h1 class="hero-title">SUSHANT KURREN</h1>
+                        <p class="hero-subtitle">CONTEMPLATIVE TRAVEL · CINEMATIC COMPOSITIONS</p>
+                    </div>
+                `;
+            }
+        }
+
+        // Render series
+        function renderSeries() {
+            const container = document.getElementById('series');
+            const grouped = groupPostsByLocation();
+            
+            Object.values(grouped).forEach((location, index) => {
+                const section = document.createElement('section');
+                section.className = 'series';
+                section.style.animationDelay = `${index * 0.2}s`;
+                
+                const header = document.createElement('div');
+                header.className = 'series-header';
+                header.innerHTML = `
+                    <h2 class="series-title">${location.name.toUpperCase()}</h2>
+                    <p class="series-subtitle">${location.subtitle}</p>
+                `;
+                
+                const filmstrip = document.createElement('div');
+                filmstrip.className = 'filmstrip';
+                
+                location.posts.forEach(post => {
+                    post.images.forEach(image => {
+                        const item = document.createElement('div');
+                        let itemClass = 'filmstrip-item ';
+                        
+                        if (post.portrait) {
+                            itemClass += 'portrait-item';
+                        } else if (post.ratio === 1.0) {
+                            itemClass += 'square-item';
+                        } else {
+                            itemClass += 'landscape-item';
+                        }
+                        
+                        item.className = itemClass;
+                        item.innerHTML = `
+                            <img src="photos/${image.file}" alt="${post.caption}">
+                            <div class="filmstrip-caption">${post.caption}</div>
+                        `;
+                        
+                        item.addEventListener('click', () => {
+                            openLightbox(`photos/${image.file}`, post.caption);
+                        });
+                        
+                        filmstrip.appendChild(item);
+                    });
+                });
+                
+                section.appendChild(header);
+                section.appendChild(filmstrip);
+                container.appendChild(section);
+            });
+        }
+
+        // Load widescreen photos
+        function loadWidescreenPhotos() {
+            const container = document.getElementById('widescreenContainer');
+            
+            posts.forEach(post => {
+                if (post.ratio >= 1.5) {
+                    post.images.forEach(image => {
+                        const div = document.createElement('div');
+                        div.className = 'widescreen-photo';
+                        div.innerHTML = `
+                            <img src="photos/${image.file}" alt="${post.caption}">
+                            <div class="widescreen-caption">${post.caption.toUpperCase()}</div>
+                        `;
+                        container.appendChild(div);
+                    });
+                }
+            });
+        }
+
+        // Lightbox functionality
+        function openLightbox(src, caption) {
+            const lightbox = document.getElementById('lightbox');
+            const image = document.getElementById('lightboxImage');
+            const captionEl = document.getElementById('lightboxCaption');
+            
+            image.src = src;
+            captionEl.textContent = caption;
+            lightbox.style.display = 'block';
+        }
+
+        function closeLightbox() {
+            document.getElementById('lightbox').style.display = 'none';
+        }
+
+        // Navigation
+        function showSection(sectionName) {
+            if (sectionName === 'series') {
+                document.getElementById('series').style.display = 'block';
+                document.getElementById('widescreen').style.display = 'none';
+            } else if (sectionName === 'widescreen') {
+                document.getElementById('series').style.display = 'none';
+                document.getElementById('widescreen').style.display = 'block';
+                // Apply scroll snap to html for widescreen section
+                document.documentElement.style.scrollSnapType = 'y mandatory';
+            } else {
+                // Remove scroll snap when not in widescreen
+                document.documentElement.style.scrollSnapType = 'none';
+            }
+            
+            // Update nav links
+            document.querySelectorAll('.nav-link').forEach(link => {
+                link.classList.remove('active');
+            });
+            document.querySelector(`[data-section="${sectionName}"]`).classList.add('active');
+        }
+
+        // Scroll animation observer
+        function setupScrollAnimations() {
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('visible');
+                    }
+                });
+            }, {
+                threshold: 0.1,
+                rootMargin: '0px 0px -100px 0px'
+            });
+
+            document.querySelectorAll('.series').forEach(series => {
+                observer.observe(series);
+            });
+        }
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', () => {
+            loadHero();
+            renderSeries();
+            loadWidescreenPhotos();
+            setupScrollAnimations();
+            
+            // Navigation event listeners
+            document.querySelectorAll('.nav-link').forEach(link => {
+                link.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    showSection(link.dataset.section);
+                });
+            });
+            
+            // Lightbox close events
+            document.getElementById('closeLightbox').addEventListener('click', closeLightbox);
+            document.getElementById('lightbox').addEventListener('click', (e) => {
+                if (e.target === document.getElementById('lightbox')) {
+                    closeLightbox();
+                }
+            });
+            
+            // Keyboard navigation
+            document.addEventListener('keydown', (e) => {
+                if (e.key === 'Escape') {
+                    closeLightbox();
+                }
+            });
+        });
+    </script>
+</body>
+</html>
